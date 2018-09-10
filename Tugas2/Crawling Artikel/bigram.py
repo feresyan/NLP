@@ -28,7 +28,7 @@ for berita in list_berita:
         else:
             freq_tab[token] = 1
         total_count +=1
-print(freq_tab)
+#print(freq_tab)
 #
 #print('--------------------------------------------------------------------------')
 
@@ -50,7 +50,8 @@ for berita in list_berita:
 
 for x in bigram:
     print('---------------------------------------')
-    print(x, bigram[x])
+    print(x, bigram[x] )
+    
     for y in bigram[x]:
         print(y, bigram[x][y])
 

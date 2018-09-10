@@ -76,34 +76,34 @@ def crawl(url):
 
 def main():
     url1 = 'https://www.viva.co.id/berita'
-    url2 = 'https://www.viva.co.id/digital'
-    url3 = 'https://www.viva.co.id/gaya-hidup'
-    url4 = 'https://www.viva.co.id/otomotif'
-    url5 = 'https://www.viva.co.id/bola'
-    url6 = 'https://www.viva.co.id/showbiz'
-    url7 = 'https://www.viva.co.id/sport'
-    # url8 = 'https://www.viva.co.id/vlix'
-    url9 = 'https://www.viva.co.id/other'
+#    url2 = 'https://www.viva.co.id/digital'
+#    url3 = 'https://www.viva.co.id/gaya-hidup'
+#    url4 = 'https://www.viva.co.id/otomotif'
+#    url5 = 'https://www.viva.co.id/bola'
+#    url6 = 'https://www.viva.co.id/showbiz'
+#    url7 = 'https://www.viva.co.id/sport'
+#    # url8 = 'https://www.viva.co.id/vlix'
+#    url9 = 'https://www.viva.co.id/other'
     url10 = 'https://www.viva.co.id/sport'
     data1 = crawl(url1)
-    data2 = crawl(url2)
-    data3 = crawl(url3)
-    data4 = crawl(url4)
-    data5 = crawl(url5)
-    data6 = crawl(url6)
-    data7 = crawl(url7)
-    # data8 = crawl(url8)
-    data9 = crawl(url9)
+#    data2 = crawl(url2)
+#    data3 = crawl(url3)
+#    data4 = crawl(url4)
+#    data5 = crawl(url5)
+#    data6 = crawl(url6)
+#    data7 = crawl(url7)
+#    # data8 = crawl(url8)
+#    data9 = crawl(url9)
     data10 = crawl(url10)
-    writeToCsv('viva-berita.csv', data1)
-    writeToCsv('viva-digital.csv', data2)
-    writeToCsv('viva-gaya-hidup.csv', data3)
-    writeToCsv('viva-otomotif.csv', data4)
-    writeToCsv('viva-bola.csv', data5)
-    writeToCsv('viva-showbiz.csv', data6)
-    writeToCsv('viva-sport.csv', data7)
-    # writeToCsv('viva-vlix.csv', data8)
-    writeToCsv('viva-other.csv', data9)
-    writeToCsv('viva-sport.csv', data10)
+    writeToCsv('viva-berita2.csv', data1)
+#    writeToCsv('viva-digital.csv', data2)
+#    writeToCsv('viva-gaya-hidup.csv', data3)
+#    writeToCsv('viva-otomotif.csv', data4)
+#    writeToCsv('viva-bola.csv', data5)
+#    writeToCsv('viva-showbiz.csv', data6)
+#    writeToCsv('viva-sport.csv', data7)
+#    # writeToCsv('viva-vlix.csv', data8)
+#    writeToCsv('viva-other.csv', data9)
+    writeToCsv('viva-sport2.csv', data10)
 
 main()
