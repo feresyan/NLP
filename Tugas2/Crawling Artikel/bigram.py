@@ -3,6 +3,7 @@ import nltk
 import re
 import math
 
+#inisiasi variabel yang digunakan
 list_berita = []
 freq_tab = {}
 total_count = 0
@@ -74,20 +75,19 @@ with open('artikel/viva-sport2.csv') as csvfile:
 
 # Melakukan tokenisasi untuk setiap artikel, lalu menghitung frekuensi kata dari seluruh artikel
 for berita in list_berita:
-    berita = re.sub('[^a-zA-Z]',' ', berita) #Menghilangkan angka,tanda baca dan simbol
-    token_berita = nltk.word_tokenize(berita)
+    berita = re.sub('[^a-zA-Z]',' ', berita) #Menghilangkan angka,tanda baca dan simbol pada artikel
+    token_berita = nltk.word_tokenize(berita) #Melakukan tokenisasi pada artikel
     for token in token_berita:
-        if token != '.':
-            if token in freq_tab:
-                freq_tab[token] += 1
-            else:
-                freq_tab[token] = 1
-            total_count +=1
+        if token in freq_tab:
+            freq_tab[token] += 1
+        else:
+            freq_tab[token] = 1
+        total_count +=1
 
 #melakukan bigram pada setiap artikel
 for berita in list_berita:
-    berita = re.sub('[^a-zA-Z]',' ', berita)
-    token_berita = nltk.word_tokenize(berita)
+    berita = re.sub('[^a-zA-Z]',' ', berita) #Menghilangkan angka,tanda baca dan simbol pada artikel
+    token_berita = nltk.word_tokenize(berita) #Melakukan tokenisasi pada artikel
     length_token_berita = len(token_berita)
     for x in range(0, length_token_berita - 1):
         if token_berita[x] in bigram:
@@ -101,7 +101,7 @@ for berita in list_berita:
             bigram[token_berita[x]][token_berita[x + 1]] = 1
             bigram_count += 1
 
-#Menghitung probabilitas
+#Menghitung probabilitas pada kata 
 for x in bigram:
 #     print('---------------------------------------')
 #     print(x, bigram[x],'\n')
@@ -113,7 +113,7 @@ for x in bigram:
 #         print('\n')
 
 #pengujian prediksi kemunculan terhadap 10 kata
-kata_uji = ['saya','berita','prabowo','saat','mengatakan','tidak','bisa','pada','namun','joko']
+kata_uji = ['bagi','mereka','alasan','saat','mengatakan','tidak','bisa','saya','prabowo','joko']
 hasil = 0
 kata_selanjutnya = ''
 
@@ -127,7 +127,7 @@ for x in kata_uji:
             kata_selanjutnya = y
     print('Kata :',x)
     print('Kata Selanjutnya :',kata_selanjutnya)
-    print('Jumlah kemunculan kata: ',hasil)
+    print('Jumlah kemunculan kalimat',x,kata_selanjutnya,':',hasil)
     print('---------------------------------')
 
 #Evaluasi model dengan perplexity menggunakan 5 kalimat
