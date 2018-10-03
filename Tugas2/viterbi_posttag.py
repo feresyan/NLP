@@ -162,26 +162,47 @@ def viterbi(trans_prob, emission_prob, tag_count, sentences, dictionary):
                 if sentences[i][j] in dictionary:
                     for k in range(len(dictionary[sentences[i][j]])):
                         kata = sentences[i][j]+","+dictionary[sentences[i][j]][k]
-                        if kata in emission_prob:
-                            print("INI EMMISION : ",kata," : ",emission_prob[kata])
+                        if kata in result:
+                            continue
+                        else:
+                            if kata in emission_prob:
+                                emis_prob = emission_prob[kata]
+                                print("INI EMMISION : ",kata," : ",emis_prob)                   
+                            else:
+                                emis_prob = 0
             else:
                 if sentences[i][j+1] in dictionary:
                     for k in range(len(dictionary[sentences[i][j+1]])):
+                        print("Panjang K : ",len(dictionary[sentences[i][j+1]]))
+                        print("TAG : ",dictionary[sentences[i][j+1]][k])
                         start = "<start>,"+dictionary[sentences[i][j+1]][k]
                         kata = sentences[i][j+1]+","+dictionary[sentences[i][j+1]][k]
                         if start in trans_prob:
+                            tra_prob = trans_prob[start]
                             print("INI START",start," : ",trans_prob[start])
+                        else:
+                            tra_prob = 0
+                            print("Trans prob untuk start tidak ada")
                         if kata in emission_prob:
+                            emis_prob = emission_prob[kata]
                             print("INI EMMISION ADA START : ",kata," : ",emission_prob[kata])
-                        prob = trans_prob[start] * emission_prob[kata]
+                        else:
+                            emis_prob = 0
+                        prob = tra_prob * emis_prob
                         if best_prob < prob:
                             best_tag = dictionary[sentences[i][j+1]][k]
                             best_prob = prob
-            print(sentences[i][j]+","+best_tag)
+                            print("BEST PROB : ",best_prob)
+                    result.append(sentences[i][j+1]+","+best_tag)
+                    best_prob = 0
+                    best_tag = ''
+                else:
+                    result.append(sentences[i][j+1]+","+"nn")
+                    print("Kata",sentences[i][j+1],"tidak ada dalam dictionary")
 #            result.append(sentences[i][j]+","+best_tag)
-#            print(result)
+            print("result : ",result)
         results.append(result)
-        best_prob = 0
+        result = []
 #viterbi_mat, tag_sequence = viterbi(trans_prob, emission_prob, tag_count, sentence)
 viterbi(trans_prob, emission_prob, tag_count, sentences, dictionary)
 
