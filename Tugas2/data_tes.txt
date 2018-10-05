@@ -537,26 +537,3 @@ kita	PRP
 inginkan	VB
 .	Z
 </kalimat>
-<kalimat id=1021>
-tetapi	CC
-setiap	CD
-perguliran	NN
-di	IN
-awal-awal	X
-sesuatu	PRP
-yang	SC
-baik	JJ
-dan	CC
-saya	PRP
-kira	VB
-di	IN
-akhir	NN
-tahun	NN
-akan	MD
-semakin	RB
-cepat	JJ
-,	Z
-kata	VB
-Burhanudin	NNP
-.	Z
-</kalimat>
