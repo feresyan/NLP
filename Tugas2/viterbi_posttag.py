@@ -113,7 +113,7 @@ def create_emission_prob_table(word_tag, tag_count):
         emission_prob[emission_key] = word_tag[word_tag_entry]/tag_count[current_tag]
     return emission_prob
 
-emission_prob = create_emission_prob_table(word_tag,tag_count)
+emis_prob = create_emission_prob_table(word_tag,tag_count)
 #print("EMISSION PROB :")
 #print(emission_prob,"\n")
 
@@ -151,79 +151,96 @@ def data_tes(file_name):
 sentences, true_results = data_tes('data_tes.txt')
 #print(sentences)
 
-def viterbi(trans_prob, emission_prob, tag_count, sentences, dictionary):
-    best_prob = 0
-    best_tag = ''
+
+def viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary):
+    best_prob_kata = 0
+    hasil = []
     result = []
     results = []
+    tag = []
     for i in range(len(sentences)):
         print(sentences[i])
         for j in range(len(sentences[i])):
-            if sentences[i][j] != "<start>":
+            print("kata : ",sentences[i][j])
+            if sentences[i][j] == "<start>":
+                probabilitas = 1
+                tag_awal = "<start>"
+            elif sentences[i][j] == "<end>":
+                continue
+            else:
                 if sentences[i][j] in dictionary:
                     for k in range(len(dictionary[sentences[i][j]])):
-                        print("Panjang K : ",len(dictionary[sentences[i][j+1]]))
-                        kata = sentences[i][j]+","+dictionary[sentences[i][j]][k]
-                        if kata in result:
-                            continue
+                        print("TAG : ",dictionary[sentences[i][j]][k])
+                        kata_dengan_tag = sentences[i][j]+","+dictionary[sentences[i][j]][k]
+                        tag_baru = dictionary[sentences[i][j]][k]
+                        transition = tag_awal+","+tag_baru
+                        if transition in trans_prob:
+                            transition_prob = trans_prob[transition]
                         else:
-                            if kata in emission_prob:
-                                emis_prob = emission_prob[kata]
-                                print("INI EMMISION : ",kata," : ",emis_prob)                   
-                            else:
-                                emis_prob = 0
-                            print("BEST TAG DI SETELAH START :",best_tag)
-                            tra_prob = best_tag+","+dictionary[sentences[i][j]][k]
-                            if tra_prob in trans_prob:
-                                tra_prob = trans_prob[tra_prob]
-                            else:
-                                tra_prob = 0
-                            prob = best_prob * tra_prob * emis_prob
-                            if best_prob < prob:
-                                best_tag = dictionary[sentences[i][j+1]][k]
-                                best_prob = prob
-                                print("BEST PROB : ",best_prob)
-                                
-            else:
-                if sentences[i][j+1] in dictionary:
-                    for k in range(len(dictionary[sentences[i][j+1]])):
-                        print("Panjang K : ",len(dictionary[sentences[i][j+1]]))
-                        print("TAG : ",dictionary[sentences[i][j+1]][k])
-                        start = "<start>,"+dictionary[sentences[i][j+1]][k]
-                        kata = sentences[i][j+1]+","+dictionary[sentences[i][j+1]][k]
-                        if start in trans_prob:
-                            tra_prob = trans_prob[start]
-                            print("INI START",start," : ",trans_prob[start])
+                            transition_prob = 0
+                        if kata_dengan_tag in emis_prob:
+                            emission_prob = emis_prob[kata_dengan_tag]
                         else:
-                            tra_prob = 0
-                            print("Trans prob untuk start tidak ada")
-                        if kata in emission_prob:
-                            emis_prob = emission_prob[kata]
-                            print("INI EMMISION ADA START : ",kata," : ",emission_prob[kata])
-                        else:
-                            emis_prob = 0
-                        prob = tra_prob * emis_prob
-                        if best_prob < prob:
-                            best_tag = dictionary[sentences[i][j+1]][k]
-                            best_prob = prob
-                            print("BEST PROB : ",best_prob)
-                    result.append(sentences[i][j+1]+","+best_tag)
-#                    best_prob = 0
-#                    best_tag = ''
+                            emission_prob= 0
+                        print("Probabilitas : ",probabilitas)
+                        print("transition : ",transition_prob)
+                        print("emmision : ",emission_prob)
+                        best_prob = probabilitas*transition_prob*emission_prob
+                        print("probabilitas baru : ",best_prob)
+                        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                        hasil.append(best_prob)
+                        tag.append(tag_baru)
+                    for l in range(len(hasil)):
+                        if hasil[l] > best_prob_kata:
+                            best_prob_kata = hasil[l]
+                            probabilitas = hasil[l]
+                            tag_awal = tag[l]
+                    kata = sentences[i][j]+","+tag_awal
+                    print("hasil kata :",kata)
+                    result.append(kata)
+                    best_prob_kata = 0
+                    print("----------------------------")
+                    tag = []
+                    hasil = []
                 else:
-                    best_tag = "nn"
-                    result.append(sentences[i][j+1]+","+"nn")
-                    print("Kata",sentences[i][j+1],"tidak ada dalam dictionary")
-#            result.append(sentences[i][j]+","+best_tag)
-            print("result : ",result)
-            best_tag = best_tag
+                    kata = sentences[i][j]+",z"
+                    result.append(kata)
+        print(result)
+        print("----------------------------")
         results.append(result)
         result = []
-#viterbi_mat, tag_sequence = viterbi(trans_prob, emission_prob, tag_count, sentence)
-viterbi(trans_prob, emission_prob, tag_count, sentences, dictionary)
+    return results
 
-    
+results =  viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary)
+#print(true_results)
 
+def cek(results,true_results):
+    sama = 0
+    for i in range(len(results)):
+        counter = 0
+#        print("LEN RESULTS :",len(results[i]))
+        print("results : True Result")
+        print("---------------------")
+        for j in range(len(results[i])):
+            print(results[i][j]," : ",true_results[i][j])
+            if results[i][j] == true_results[i][j]:
+                counter= counter+1
+        if counter == len(results[i]):
+            print("Sama\n")
+            sama = sama+1
+        else:
+            print("Tidak Sama\n")
+    return sama
+
+sama = cek(results,true_results)
+
+def akurasi(sama,results):
+    print(len(results))
+    acc = (sama / len(results))*100
+    return acc
+
+acc = akurasi(sama,results)
+print("Akurasi Viterbi Posttag : ",acc,"%")
 
 
 
