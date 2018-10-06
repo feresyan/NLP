@@ -5,9 +5,9 @@ Created on Wed Sep 26 20:29:43 2018
 @author: feresyan
 """
 
-import numpy
-import io
-from itertools import permutations
+#import numpy
+#import io
+#from itertools import permutations
 
 def read_file_init_table(fname):
     tag_count = {}
@@ -65,9 +65,9 @@ def read_file_init_table(fname):
         idx_line = idx_line+1 
     return tag_count, word_tag, tag_trans,dictionary
 
-tag_count, word_tag, tag_trans, dictionary = read_file_init_table('sample.txt')
-#print("TAG COUNT :")
-#print(tag_count,"\n")
+tag_count, word_tag, tag_trans, dictionary = read_file_init_table('data_training.txt')
+print("TAG COUNT :")
+print(tag_count,"\n")
 #print("WORD TAG :")
 #print(word_tag,"\n")
 #print("TAG TRANS:")
@@ -76,7 +76,6 @@ tag_count, word_tag, tag_trans, dictionary = read_file_init_table('sample.txt')
 #print(dictionary,"\n")
 
 def create_trans_prob_table(tag_trans, tag_count):
-#    print(tag_trans)
     trans_prob = {}
     for tag1 in tag_count.keys():
         for tag2 in tag_count.keys():
@@ -103,7 +102,6 @@ def create_emission_prob_table(word_tag, tag_count):
             if koma > 1:
                 current_word = word_tag_entry.rsplit(',',1)[0]
                 current_tag = word_tag_entry.rsplit(',',1)[1]
-#                print(first)
             else:
                 word_tag_split = word_tag_entry.split(',')
                 current_word = word_tag_split[0]
@@ -127,7 +125,6 @@ def data_tes(file_name):
     with open(file_name) as f:
         content = f.readlines()
         content = [x.strip() for x in content]
-#        print(content)
         
     idx_line = 0
     
@@ -159,9 +156,9 @@ def viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary):
     results = []
     tag = []
     for i in range(len(sentences)):
-        print(sentences[i])
+#        print(sentences[i])
         for j in range(len(sentences[i])):
-            print("kata : ",sentences[i][j])
+#            print("kata : ",sentences[i][j])
             if sentences[i][j] == "<start>":
                 probabilitas = 1
                 tag_awal = "<start>"
@@ -170,7 +167,7 @@ def viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary):
             else:
                 if sentences[i][j] in dictionary:
                     for k in range(len(dictionary[sentences[i][j]])):
-                        print("TAG : ",dictionary[sentences[i][j]][k])
+#                        print("TAG : ",dictionary[sentences[i][j]][k])
                         kata_dengan_tag = sentences[i][j]+","+dictionary[sentences[i][j]][k]
                         tag_baru = dictionary[sentences[i][j]][k]
                         transition = tag_awal+","+tag_baru
@@ -182,12 +179,12 @@ def viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary):
                             emission_prob = emis_prob[kata_dengan_tag]
                         else:
                             emission_prob= 0
-                        print("Probabilitas : ",probabilitas)
-                        print("transition : ",transition_prob)
-                        print("emmision : ",emission_prob)
+#                        print("Probabilitas : ",probabilitas)
+#                        print("transition : ",transition_prob)
+#                        print("emmision : ",emission_prob)
                         best_prob = probabilitas*transition_prob*emission_prob
-                        print("probabilitas baru : ",best_prob)
-                        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+#                        print("probabilitas baru : ",best_prob)
+#                        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                         hasil.append(best_prob)
                         tag.append(tag_baru)
                     for l in range(len(hasil)):
@@ -196,17 +193,17 @@ def viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary):
                             probabilitas = hasil[l]
                             tag_awal = tag[l]
                     kata = sentences[i][j]+","+tag_awal
-                    print("hasil kata :",kata)
+#                    print("hasil kata :",kata)
                     result.append(kata)
                     best_prob_kata = 0
-                    print("----------------------------")
+#                    print("----------------------------")
                     tag = []
                     hasil = []
                 else:
-                    kata = sentences[i][j]+",z"
+                    kata = sentences[i][j]+",nn"
                     result.append(kata)
-        print(result)
-        print("----------------------------")
+#        print(result)
+#        print("----------------------------")
         results.append(result)
         result = []
     return results
@@ -215,32 +212,28 @@ results =  viterbi(trans_prob, emis_prob, tag_count, sentences, dictionary)
 #print(true_results)
 
 def cek(results,true_results):
-    sama = 0
+    jml_kata = 0
+    counter = 0
     for i in range(len(results)):
-        counter = 0
-#        print("LEN RESULTS :",len(results[i]))
         print("results : True Result")
         print("---------------------")
         for j in range(len(results[i])):
             print(results[i][j]," : ",true_results[i][j])
             if results[i][j] == true_results[i][j]:
                 counter= counter+1
-        if counter == len(results[i]):
-            print("Sama\n")
-            sama = sama+1
-        else:
-            print("Tidak Sama\n")
-    return sama
+            jml_kata +=1
+    print(counter)
+    print(jml_kata)
+    return counter,jml_kata
+    
+counter, jml_kata =cek(results,true_results)
 
-sama = cek(results,true_results)
-
-def akurasi(sama,results):
-    print(len(results))
-    acc = (sama / len(results))*100
+def akurasi(counter,jml_kata):
+    acc = (counter / jml_kata)*100
     return acc
 
-acc = akurasi(sama,results)
-print("Akurasi Viterbi Posttag : ",acc,"%")
+acc = akurasi(counter,jml_kata)
+print("Akurasi Baseline Posttag : ",acc,"%")
 
 
 

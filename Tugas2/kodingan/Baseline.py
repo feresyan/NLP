@@ -10,7 +10,6 @@ def read_file_init_table(fname):
     words = dict()
     with open(fname) as f:
         content = f.readlines()
-        
     # you may also want to remove whitespace characters like `\n` at the end of each line
     content = [x.strip() for x in content]
 
@@ -36,14 +35,11 @@ def read_file_init_table(fname):
         idx_line = idx_line+1 
     return word_tag,words
 
-
-word_tag,words= read_file_init_table('sample.txt')
-#word_tag,words= read_file_init_table('sample.txt')
-print("WORD TAG :")
-print(word_tag,"\n")
-
-print("words")
-print(words,"\n")
+word_tag,words= read_file_init_table('data_training.txt')
+#print("WORD TAG :")
+#print(word_tag,"\n")
+#print("words")
+#print(words,"\n")
 
 def data_tes(file_name):
     sentence = []
@@ -54,7 +50,6 @@ def data_tes(file_name):
     with open(file_name) as f:
         content = f.readlines()
         content = [x.strip() for x in content]
-#        print(content)
         
     idx_line = 0
     
@@ -84,7 +79,6 @@ def baseline(sentences,word_tag,words):
         for j in range(len(sentences[i])):
             best = 0
             if sentences[i][j] in words:
-#                print(sentences[i][j]," : ",words[sentences[i][j]])
                 for k in range(len(words[sentences[i][j]])):
                     kata = sentences[i][j]+","+words[sentences[i][j]][k]
                     if kata in word_tag:
@@ -94,7 +88,6 @@ def baseline(sentences,word_tag,words):
  
                 result.append(sentences[i][j]+','+tag)
             else:
-#                print(sentences[i][j]," : "," - ")
                 result.append(sentences[i][j]+',nn')
         results.append(result)
         result = []
@@ -104,31 +97,34 @@ results = baseline(sentences,word_tag,words)
 #print(results)
 
 def cek(results,true_results):
-    sama = 0
+#    sama = 0
+    jml_kata = 0
+    counter = 0
     for i in range(len(results)):
-        counter = 0
-#        print("LEN RESULTS :",len(results[i]))
+#        counter = 0
         print("results : True Result")
         print("---------------------")
         for j in range(len(results[i])):
             print(results[i][j]," : ",true_results[i][j])
             if results[i][j] == true_results[i][j]:
                 counter= counter+1
-        if counter == len(results[i]):
-            print("Sama\n")
-            sama = sama+1
-        else:
-            print("Tidak Sama\n")
-    return sama
+            jml_kata +=1
+#        if counter == len(results[i]):
+#            print("Sama\n")
+#            sama = sama+1
+#        else:
+#            print("Tidak Sama\n")
+    print(counter)
+    print(jml_kata)
+    return counter,jml_kata
     
-sama =cek(results,true_results)
+counter, jml_kata =cek(results,true_results)
 
-def akurasi(sama,results):
-    print(len(results))
-    acc = (sama / len(results))*100
+def akurasi(counter,jml_kata):
+    acc = (counter / jml_kata)*100
     return acc
 
-acc = akurasi(sama,results)
+acc = akurasi(counter,jml_kata)
 print("Akurasi Baseline Posttag : ",acc,"%")
     
     
