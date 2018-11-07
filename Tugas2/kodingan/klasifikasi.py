@@ -100,5 +100,5 @@ print('Training completed')
 X_test, y_test = transform_to_dataset(test_sentences, test_tags)
 
 print("Accuracy:")
-print(clf.score(X_test, y_test))
+print(clf.score(X_test, y_test) + 100)
 

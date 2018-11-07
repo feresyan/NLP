@@ -1,0 +1,11 @@
+PETUNJUK MENJALAKAN PROGRAM
+Program ini dibuat dengan bahasa pemrograman PYTHON, berikut langkah-langkah menjalankannya:
+1.	Siapkan program python versi 3.6
+2.	Disarankan menggunakan Spyder dari Anaconda.
+3.	Taruh folder sesuai direktori yang diinginkan
+4.	install/impor library yang diperlukan (math, csv, dsb).
+5.	Jalankan (run) file 1301154318.py untuk melihat hasil bigram pada 100 artikel.
+
+Nama : Fero Resyanto
+Kelas : IF-GAB-01
+Nim	: 1301154318
