@@ -42,8 +42,8 @@ prob_label_0 ={}
 prob_label_1 ={}
 prob_label_2 ={}
 
-def calculate_probability(vocabulary, class_word, all_word):
-	return (class_word.count(vocabulary) + 1) / (len(all_word) + len(vocabulary)) # Rumus Naive Bayes
+def calculate_probability(vocabulary, class_word, unique_vocab):
+	return (class_word.count(vocabulary) + 1) / (len(class_word) + len(unique_vocab)) # Rumus Naive Bayes
 
 all_word = list(np.concatenate(par_tokens,axis=None)) # memasukan seluruh kata yang sudah di tokenize ke satu variabel (dari multidimensi menjadi 1 dimensi)
 vocabulary = list(set(np.concatenate(par_tokens,axis=None))) # mencari distinct word dari kata yang sudah di tokenize dengan function 'set'
@@ -51,22 +51,20 @@ all_word_normal = list(np.concatenate(normal,axis=None)) # memasukan seluruh kat
 all_word_penipuan = list(np.concatenate(penipuan,axis=None))# memasukan seluruh kata yang sudah di tokenize ke satu variabel (dari multidimensi menjadi 1 dimensi)
 all_word_promo = list(np.concatenate(promo,axis=None)) # memasukan seluruh kata yang sudah di tokenize ke satu variabel (dari multidimensi menjadi 1 dimensi)
 
-print(all_word_normal)
-
 print("total kata = ", len(all_word), "," ,"total vocabulary = " , len(vocabulary))
 
 for i in range(len(vocabulary)):
-	prob_label_0[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_normal,all_word)
+	prob_label_0[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_normal,vocabulary)
 
 for i in range(len(vocabulary)):
-    prob_label_1[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_penipuan,all_word)
+    prob_label_1[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_penipuan,vocabulary)
 
 for i in range(len(vocabulary)):
-    prob_label_2[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_promo,all_word)
+    prob_label_2[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_promo,vocabulary)
 
-# print(prob_label_0)
-# print(prob_label_1)
-# print(prob_label_2)
+print(prob_label_0)
+print(prob_label_1)
+print(prob_label_2)
 
 # ======================================================= MODEL ====================================================
 
@@ -107,9 +105,9 @@ for i in range(len(par_tokens_test)):
             temp_1 *= prob_label_1[par_tokens_test[i][j]]
             temp_2 *= prob_label_2[par_tokens_test[i][j]]
         except:
-            temp_0 *= calculate_probability(par_tokens_test[i][j],all_word_normal,all_word)
-            temp_1 *= calculate_probability(par_tokens_test[i][j], all_word_penipuan, all_word)
-            temp_2 *= calculate_probability(par_tokens_test[i][j], all_word_promo, all_word)
+            temp_0 *= calculate_probability(par_tokens_test[i][j],all_word_normal,vocabulary)
+            temp_1 *= calculate_probability(par_tokens_test[i][j], all_word_penipuan,vocabulary)
+            temp_2 *= calculate_probability(par_tokens_test[i][j], all_word_promo,vocabulary)
 
     temp_0 *= prob_0
     temp_1 *= prob_1
@@ -138,10 +136,10 @@ for i in range(15):
     if hasil[i] == int(data_label_test[i]):
         count += 1
 
-# print(hasil)
-# print(data_label_test)
-# print(count)
-# print("accuracy = ", count/15)
+print(hasil)
+print(data_label_test)
+print(count)
+print("accuracy = ", count/15)
 
 
 

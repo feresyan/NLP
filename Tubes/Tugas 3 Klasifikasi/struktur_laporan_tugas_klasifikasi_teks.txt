@@ -1,0 +1,30 @@
+Struktur Laporan Tugas Klasifikasi Teks
+
+Catatan: pada bagian keterangan anggota kelompok, sertakan juga informasi komponen pekerjaan yang dikerjakan masing-masing anggota, beserta persentase kontribusi terhadap keseluruhan tugas.
+
+I. Abstrak
+
+II. Pendahuluan
+   - Task apa yang diselesaikan?
+   - Penjelasan input dan output. Misal: diberikan sekumpulan review ...., akan dihasilkan rating sentimen dalam rentang nilai 1-5.
+
+III. Dataset
+   - Deskripsi dan sumber dataset
+   - Contoh/potongan dataset beserta penjelasannya
+   - Analisis terhadap atribut dataset. Misal: dataset ini berisi 50 review positif dan 50 review negatif, di mana atribut panjang teks mempunyai korelasi yang tinggi dengan kelas sentimen. Mayoritas review negatif mempunyai jumlah kata yang lebih tinggi dibanding review positif.
+     [sertakan grafik untuk mendukung pernyataan tersebut bila perlu]
+
+IV. Analisis Fitur dan Metode Klasifikasi serta Eksperimen
+    - Fitur apa saja yang digunakan untuk klasifikasi? Mengapa?
+    - Algoritma klasifikasi apa yang dipilih? Mengapa?
+    - Library apa saja yang dipakai
+    - Preprocessing yang dilakukan
+    - Pengaturan parameter yang diterapkan
+
+V. Evaluasi dan Analisis Hasil Klasifikasi
+
+VI. Kesimpulan (termasuk di dalamnya tantangan yang dihadapi selama pengerjaan tugas)
+
+VII. Referensi 
+
+Panjang laporan: 3-5 halaman (tidak termasuk cover)
