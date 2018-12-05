@@ -1,0 +1,23 @@
+Permasalahan :
+1. Banyak kata yang disingkat / kata tidak baku / bahasa daerah
+2. Terdapat emoticon
+
+Data : 
+
+Pembersihan data processing :
+1. Lowercase.
+2. Character Removal (punctuation/number/url). (tidak perlu number bisa jadi mencirikan kata)
+3. Stop word Removal. (tidak perlu)
+4. Stemming (tidak perlu).
+
+Feature Selection (cari kata yang mencirikan suatu label baru dibuat synomim dan expanding constraction)
+1. Synonym Normalization.
+2. Exapanding constractions (kata2 singkat). alternative : Spelling Corection
+3. Tokenizing.
+
+Metode : Naive Bayes (coba tanpa preprocessing) dan Naive Bayes (sudah di processing)
+
+1. menghilangkan punctuaition yang menjadi item
+2. mengambil kata baku bedasarkan corpus sastrawi
+3. 
+-. feature creation link
