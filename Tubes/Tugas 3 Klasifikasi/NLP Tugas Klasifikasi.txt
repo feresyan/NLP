@@ -16,8 +16,3 @@ Feature Selection (cari kata yang mencirikan suatu label baru dibuat synomim dan
 3. Tokenizing.
 
 Metode : Naive Bayes (coba tanpa preprocessing) dan Naive Bayes (sudah di processing)
-
-1. menghilangkan punctuaition yang menjadi item
-2. mengambil kata baku bedasarkan corpus sastrawi
-3. 
--. feature creation link

@@ -19,6 +19,7 @@ def candidates(word):
 
 def known(words):
     # "The subset of `words` that appear in the dictionary of WORDS."
+    # print(w for w in words if w in WORDS)
     return set(w for w in words if w in WORDS)
 
 def edits1(word):
@@ -29,12 +30,13 @@ def edits1(word):
     transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1] # ['ekmarin', 'kmearin', 'keamrin', dst]
     replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters] # ['aemarin', 'bemarin', 'cemarin', dst]
     inserts    = [L + c + R               for L, R in splits for c in letters] # ['akemarin', 'bkemarin', 'ckemarin', dst]
+    print(splits)
     return set(deletes + transposes + replaces + inserts)
 
 def edits2(word):
     # "All edits that are two edits away from `word`."
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
-kata = 'yg'
+kata = 'mkn'
 print('kata typo : ', kata)
 print('koreksi : ', correction(kata))

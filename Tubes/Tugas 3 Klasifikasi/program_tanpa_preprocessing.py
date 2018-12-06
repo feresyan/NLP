@@ -4,6 +4,9 @@ import csv
 import nltk
 import numpy as np
 
+
+# Ekstrasi Fitur & Preprocessing =========================================================================================
+
 data_pesan = []
 data_label = []
 par_tokens = []
@@ -14,14 +17,14 @@ with open('dataset_sms_spam _v1.csv', encoding='utf-8') as csvfile: # encoding='
     next(readCSV) # meng-skip row pertama dalam .csv dataset
     for row in readCSV:
         pesan = row[0]
-        pesan = pesan.lower()
+        pesan = pesan.lower() # PREPROCESSING melakukan case folding agar seluruh karakter kata menjadi huruf kecil
         label = row[1]
 
         data_pesan.append(pesan)
         data_label.append(label)
 
 for row in data_pesan:
-    par_tokens.append(nltk.word_tokenize(row)) #Melakukan tokenize pada data pesan dan dimasukan kedalam variabel par_tokens
+    par_tokens.append(nltk.word_tokenize(row)) # FEATURE SELECTION 1 -> mentokenisasi kata agar dapa dihitung jumlah kemunculan kata tersebut untuk perhitungan klasifikasi
 
 normal = []
 penipuan = []
@@ -36,14 +39,15 @@ for i in range(len(data_label)): # mencari nilai label sebenarnya pada par_token
     elif (int(data_label[i]) == 2):
         promo.append(par_tokens[i])
 
-# ============================== Tokenize and classification word to array class ==================================
+
+# Perhitungan Model menggunakan rumus naive bayes =================================================================================
 
 prob_label_0 ={}
 prob_label_1 ={}
 prob_label_2 ={}
 
 def calculate_probability(vocabulary, class_word, unique_vocab):
-	return (class_word.count(vocabulary) + 1) / (len(class_word) + len(unique_vocab)) # Rumus Naive Bayes
+    return (class_word.count(vocabulary) + 1) / (len(class_word) + len(unique_vocab)) # Rumus Naive Bayes
 
 all_word = list(np.concatenate(par_tokens,axis=None)) # memasukan seluruh kata yang sudah di tokenize ke satu variabel (dari multidimensi menjadi 1 dimensi)
 vocabulary = list(set(np.concatenate(par_tokens,axis=None))) # mencari distinct word dari kata yang sudah di tokenize dengan function 'set'
@@ -54,19 +58,13 @@ all_word_promo = list(np.concatenate(promo,axis=None)) # memasukan seluruh kata 
 print("total kata = ", len(all_word), "," ,"total vocabulary = " , len(vocabulary))
 
 for i in range(len(vocabulary)):
-	prob_label_0[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_normal,vocabulary)
+    prob_label_0[vocabulary[i]] = calculate_probability(vocabulary[i], all_word_normal, vocabulary)
+    prob_label_1[vocabulary[i]] = calculate_probability(vocabulary[i], all_word_penipuan, vocabulary)
+    prob_label_2[vocabulary[i]] = calculate_probability(vocabulary[i], all_word_promo,vocabulary)
 
-for i in range(len(vocabulary)):
-    prob_label_1[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_penipuan,vocabulary)
+# ============================================================== MODEL =========================================================================================================================================
 
-for i in range(len(vocabulary)):
-    prob_label_2[vocabulary[i]] = calculate_probability(vocabulary[i],all_word_promo,vocabulary)
-
-print(prob_label_0)
-print(prob_label_1)
-print(prob_label_2)
-
-# ======================================================= MODEL ====================================================
+# ============================================================== Pengujian ===============================================================
 
 prob_0 = len(normal) / len(data_label)
 prob_1 = len(penipuan) / len(data_label)
@@ -90,7 +88,6 @@ with open('datauji_sms_spam_v1.csv', encoding='utf-8') as csvfile: # encoding='u
 for row in data_pesan_test:
     par_tokens_test.append(nltk.word_tokenize(row))
 
-# print(len(par_tokens_test))
 
 hasil = []
 
@@ -133,12 +130,13 @@ for i in range(len(par_tokens_test)):
 count = 0
 
 for i in range(15):
-    if hasil[i] == int(data_label_test[i]):
+    data_label_test[i] = int(data_label_test[i])
+    if hasil[i] == data_label_test[i]:
         count += 1
 
-print(hasil)
-print(data_label_test)
-print(count)
+print("prediksi : ", hasil)
+print("actual   : ", data_label_test)
+print("jumlah benar : ",count, "/ 15",)
 print("accuracy = ", count/15)
 
 
